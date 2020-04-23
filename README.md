@@ -8,6 +8,7 @@ Michael Morcos
 Christopher Thurn
 
 The goal of this team is to: 
+
 Create a Pitcher class for the batting statistics for a player on the team.
 
 Create a graphical user interface that can be used to collect data about each pitcher in a game.
