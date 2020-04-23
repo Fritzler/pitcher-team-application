@@ -3,9 +3,9 @@ This is the Java Application for the Pitcher Team.
 
 The members of this team are:
 
-Ethan Kohn – Lead
-Michael Morcos
-Christopher Thurn
+1. Ethan Kohn – Lead
+2. Michael Morcos
+3. Christopher Thurn
 
 The goal of this team is to: 
 
