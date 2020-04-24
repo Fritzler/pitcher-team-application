@@ -1,8 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+Date Created: 4/23/2020
+
+Version: Updated Version 1.4
+Date Updated: 4/24/2020
+
+Class: CSD 2522 - Java Programming II
+Professor: Al Tokarsky
+
+Program Page Author: Christopher Thurn
+Program Purpose: To validate the form information a user enters to ensure
+it is the correct type of data to be submitted. 
+*/
 package baseballguifx;
 
 /**
