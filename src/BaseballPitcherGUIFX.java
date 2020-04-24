@@ -151,15 +151,15 @@ public class BaseballGUIFX extends Application {
     private void insertButtonClicked() {
         Validator v = new Validator();
         playerNameLabel.setText(v.isPresent(playerNameField.getText(), "Player Name") );        
-        inningsPitchedLabel.setText(v.isPresent(inningsPitchedField.getText(), "Innings Pitched") );        
-        baseHitsLabel.setText(v.isPresent(baseHitsField.getText(), "Base Hits") );
-        runsScoredLabel.setText(v.isPresent(runsScoredField.getText(), "Runs Scored") );
-        earnedRunLabel.setText(v.isPresent(earnedRunField.getText(), "Earned Runs") );
-        walksAllowedLabel.setText(v.isPresent(walksAllowedField.getText(), "Walks Allowed") );
-        strikeOutLabel.setText(v.isPresent(strikeOutField.getText(), "Strike Outs") );
-        atBatsLabel.setText(v.isPresent(atBatsField.getText(), "At-Bats") );
-        battersFacedLabel.setText(v.isPresent(battersFacedField.getText(), "Batters Faced") );
-        numberOfPitchesLable.setText(v.isPresent(numberOfPitchesField.getText(), "Number of Pitches") );
+        inningsPitchedLabel.setText(v.isDouble(inningsPitchedField.getText(), "Innings Pitched") );        
+        baseHitsLabel.setText(v.isInteger(baseHitsField.getText(), "Base Hits") );
+        runsScoredLabel.setText(v.isInteger(runsScoredField.getText(), "Runs Scored") );
+        earnedRunLabel.setText(v.isInteger(earnedRunField.getText(), "Earned Runs") );
+        walksAllowedLabel.setText(v.isInteger(walksAllowedField.getText(), "Walks Allowed") );
+        strikeOutLabel.setText(v.isInteger(strikeOutField.getText(), "Strike Outs") );
+        atBatsLabel.setText(v.isInteger(atBatsField.getText(), "At-Bats") );
+        battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
+        numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );
     }
     
     private void exitButtonClicked() {
