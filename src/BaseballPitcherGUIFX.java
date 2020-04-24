@@ -1,8 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+Date Created: 4/23/2020
+
+Version: Updated Version 1.4
+Date Updated: 4/24/2020
+
+Class: CSD 2522 - Java Programming II
+Professor: Al Tokarsky
+
+Program Page Author: Christopher Thurn
+Program Purpose: To display the form and allow user entry of Baseball Pitcher
+Stats.
+*/
 package baseballguifx;
 
 
@@ -39,6 +47,8 @@ public class BaseballGUIFX extends Application {
     private TextField battersFacedField;
     private TextField numberOfPitchesField;
     
+    private ComboBox gameDatesCombo;
+    
     private Label playerNameLabel;
     private Label inningsPitchedLabel;
     private Label baseHitsLabel;
@@ -60,9 +70,7 @@ public class BaseballGUIFX extends Application {
         grid.setPadding(new Insets(25, 25, 25, 25));
         grid.setHgap(10);
         grid.setVgap(10);
-        
-        String game_dates[] = { "Feb 14, 2020", "Feb 15, 2020", "Feb 16, 2020", "Feb 22, 2020" } ;
-        
+                
         Scene scene = new Scene(grid, 700, 500);
         
         grid.add(new Label("Player Name:"), 0, 0);
@@ -125,12 +133,26 @@ public class BaseballGUIFX extends Application {
         numberOfPitchesLable = new Label();
         grid.add(numberOfPitchesLable, 2, 9);
         
-        /* ISSUE WITH THE COMBO BOX
+        
+        
+        /* Combo Box Section Start */
         grid.add(new Label("Game Date:"), 0, 10);
-        ComboBox gameDatesCombo = new ComboBox(FXCollections.observableArrayList(game_dates));
-        grid.add(gameDatesCombo, 1, 10);
+        gameDatesCombo = new ComboBox();
+        gameDatesCombo.getItems().addAll("Feb 14, 2020", 
+                "Feb 15, 2020", 
+                "Feb 16, 2020", 
+                "Feb 22, 2020", 
+                "Mar 11, 2020");
+        gameDatesCombo.getSelectionModel().select(0);
+        dateofGameLabel = new Label();
         grid.add(dateofGameLabel, 2, 10);
-        */
+        
+        HBox comboBox = new HBox(10);
+        comboBox.getChildren().add(gameDatesCombo);
+        comboBox.setAlignment(Pos.BOTTOM_LEFT);
+        grid.add(comboBox, 1, 10, 1, 1);
+        /* Combo Box Section End */
+        
         
         Button insertButton = new Button("Insert Information");
         insertButton.setOnAction(event -> insertButtonClicked());
@@ -149,6 +171,7 @@ public class BaseballGUIFX extends Application {
     }
     
     private void insertButtonClicked() {
+        //Validates the information presnt in the form to ensure it is proper.
         Validator v = new Validator();
         playerNameLabel.setText(v.isPresent(playerNameField.getText(), "Player Name") );        
         inningsPitchedLabel.setText(v.isDouble(inningsPitchedField.getText(), "Innings Pitched") );        
@@ -159,7 +182,8 @@ public class BaseballGUIFX extends Application {
         strikeOutLabel.setText(v.isInteger(strikeOutField.getText(), "Strike Outs") );
         atBatsLabel.setText(v.isInteger(atBatsField.getText(), "At-Bats") );
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
-        numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );
+        numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );   
+        dateofGameLabel.setText(gameDatesCombo.getValue() + " is the date of the game.");
     }
     
     private void exitButtonClicked() {
