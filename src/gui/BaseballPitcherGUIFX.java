@@ -13,7 +13,6 @@ Stats.
 
 Revision by: Ethan Kohn, 4/25/2020
 Changes: Added file output, see comments in insertButtonClicked() function
-         NOT A FINAL REVISION, READ COMMENTS
 */
 package gui;
 
