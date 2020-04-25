@@ -3,8 +3,11 @@ package players;
 /* This class is designed to handle pitcher objects for the purpose of handling
  * data taken from the GUI, entered by the user.
  * Created By: Ethan Kohn
- * Last Revision: April 24, 2020
+ * Created: April 24, 2020
  
+ * Changelog:
+ * Revision: April 25, 2020
+ * Fixed Data Type of inningsPitched
 */
 public class Pitcher {
     
