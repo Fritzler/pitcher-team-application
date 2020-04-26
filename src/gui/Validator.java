@@ -11,7 +11,7 @@ Program Page Author: Christopher Thurn
 Program Purpose: To validate the form information a user enters to ensure
 it is the correct type of data to be submitted. 
 */
-package baseballguifx;
+package gui;
 
 /**
  *
