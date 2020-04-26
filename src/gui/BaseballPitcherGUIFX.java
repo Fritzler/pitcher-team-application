@@ -11,13 +11,13 @@ Program Page Author: Christopher Thurn
 Program Purpose: To display the form and allow user entry of Baseball Pitcher
 Stats.
 
+
 Revision by: Ethan Kohn, 4/25/2020
 Changes: Added file output, see comments in insertButtonClicked() function
 */
 package gui;
 
 
-import players.Pitcher;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -39,12 +39,11 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import players.Pitcher;
-
 /**
  *
  * @author Christopher
  */
-public class BaseballPitcherGUIFX extends Application {
+public class BaseballGUIFX extends Application {
     private TextField playerNameField;
     private TextField inningsPitchedField;
     private TextField baseHitsField;
@@ -286,9 +285,7 @@ public class BaseballPitcherGUIFX extends Application {
             System.out.println("Error on creating writeable file: " + e);
         }
         
-        // Launch the GUI
         launch(args);
-        
     }
     
 }
