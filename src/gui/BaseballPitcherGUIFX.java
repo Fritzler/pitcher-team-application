@@ -10,8 +10,12 @@ Professor: Al Tokarsky
 Program Page Author: Christopher Thurn
 Program Purpose: To display the form and allow user entry of Baseball Pitcher
 Stats.
+
+
+Revision by: Ethan Kohn, 4/25/2020
+Changes: Added file output, see comments in insertButtonClicked() function
 */
-package baseballguifx;
+package gui;
 
 
 import javafx.application.Application;
@@ -31,6 +35,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import players.Pitcher;
 /**
  *
  * @author Christopher
@@ -184,6 +192,81 @@ public class BaseballGUIFX extends Application {
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
         numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );   
         dateofGameLabel.setText(gameDatesCombo.getValue() + " is the date of the game.");
+        
+        /* The section below is to take everything entered and send it directly
+         * to a file. It will fire after validation regardless of success
+         * This should be moved to its own functions in a new class that are
+         * called only on successful validation!!
+         * DON'T FORGET TO DO THIS.
+         */
+        
+        
+        // Convert everything to variables of the proper type
+        // This is to make the creation of the pitcher object easier to read
+        String playerName = playerNameField.getText();
+        double inningsPitched = Double.parseDouble(inningsPitchedField.getText());
+        int baseHits = Integer.parseInt(baseHitsField.getText());
+        int runsScored = Integer.parseInt(runsScoredField.getText());
+        int earnedRuns = Integer.parseInt(earnedRunField.getText());
+        int walksAllowed = Integer.parseInt(walksAllowedField.getText());
+        int strikeOuts = Integer.parseInt(strikeOutField.getText());
+        int atBats = Integer.parseInt(atBatsField.getText());
+        int battersFaced = Integer.parseInt(battersFacedField.getText());
+        int numPitches = Integer.parseInt(numberOfPitchesField.getText());
+        
+        
+        /* THIS IS THE ORDER OF THE VARIABLES FROM Pitcher.java
+         * ============================
+         * String playerName
+         * double inningsPitched
+         * int baseHits
+         * int runsScored
+         * int earnedRuns
+         * int walksAllowed
+         * int strikeOuts
+         * int atBats
+         * int battersFaced
+         * int numberPitches
+         * ============================
+         */
+        // Make an object out of the items entered by the user
+        Pitcher p = new Pitcher(playerName, inningsPitched, baseHits,
+                                runsScored, earnedRuns, walksAllowed,
+                                strikeOuts, atBats, battersFaced, numPitches);
+        
+        // Set the path of the .txt file to the same as the java file
+        Path pitcherFilePath = Paths.get("pitchers.txt");
+        
+        // Attempt to prevent a FileNotFoundException
+        if (Files.exists(pitcherFilePath)) {
+            File pitcherFile = pitcherFilePath.toFile();
+            // Attempt to open the file to write
+            try {
+                PrintWriter out = new PrintWriter(   // Make sure to append to
+                                new BufferedWriter(  // the file!
+                               new FileWriter(pitcherFile, true)));
+                
+                // Print everything to a file, with tabs (\t) as a separator
+                out.print(p.getPlayerName() + "\t");
+                out.print(p.getInningsPitched() + "\t");
+                out.print(p.getBaseHits() + "\t");
+                out.print(p.getRunsScored() + "\t");
+                out.print(p.getEarnedRuns() + "\t");
+                out.print(p.getWalksAllowed() + "\t");
+                out.print(p.getStrikeOuts() + "\t");
+                out.print(p.getAtBats() + "\t");
+                out.print(p.getBattersFaced() + "\t");
+                out.println(p.getNumberPitches()); // Final entry, no \t,
+
+                // Close the file
+                out.close();
+            } catch (IOException e) {
+                 System.out.println("Error on writing to file: " + e);
+            }           
+        }
+
+        // Remove reference to the pitcher object when we're done with it
+        p = null;
     }
     
     private void exitButtonClicked() {
@@ -191,6 +274,17 @@ public class BaseballGUIFX extends Application {
     }
 
     public static void main(String[] args) {
+         // Attempt to create a pitchers.txt file if one does not already exist
+        try {
+            String fileString = "pitchers.txt";
+            Path filePath = Paths.get(fileString);
+            if (Files.notExists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
         launch(args);
     }
     
