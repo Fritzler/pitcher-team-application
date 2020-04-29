@@ -8,6 +8,9 @@ package players;
  * Changelog:
  * Revision: April 25, 2020
  * Fixed Data Type of inningsPitched
+
+ * Revision: April 29, 2020
+ * Added filename string to pass along to file i/o
 */
 public class Pitcher {
     
@@ -23,10 +26,11 @@ public class Pitcher {
     private int atBats;
     private int battersFaced;
     private int numberPitches;
+    private String filename;
     
     // constructor
     public Pitcher(String name, double ip, int hits, int runs, int er, int bb, int so,
-            int ab, int bf, int np){
+            int ab, int bf, int np, String fn){
         this.playerName = name;
         this.inningsPitched = ip;
         this.baseHits = hits;
@@ -37,6 +41,7 @@ public class Pitcher {
         this.atBats = ab;
         this.battersFaced = bf;
         this.numberPitches = np;
+        this.filename = fn;
     }
     
 
@@ -133,5 +138,13 @@ public class Pitcher {
         this.numberPitches = numberPitches;
     }
     
+    // Name of file to write to
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
     
 }
