@@ -9,15 +9,15 @@ The members of this team are:
 
 The goal of this team is to: 
 
-Create a Pitcher class for the batting statistics for a player on the team.
+Create a Pitcher class for the batting statistics for a player on the team. - Achieved
 
-Create a graphical user interface that can be used to collect data about each pitcher in a game.
+Create a graphical user interface that can be used to collect data about each pitcher in a game. - Achieved
 
-Once the data has been entered, it should be written out to a file identified by the date of the game.
+Once the data has been entered, it should be written out to a file identified by the date of the game. - Achieved
 
-Each pitcher’s statistics should be added to the file for that date. 
+Each pitcher’s statistics should be added to the file for that date. - Achieved
 
-The format of the file is up to the team to decide, binary, flat or SQL-DB it is your decision.
+The format of the file is up to the team to decide, binary, flat or SQL-DB it is your decision. - Achieved - Flat
 
 When the file is read, it should produce a report that lists the statistics for all pitchers in that game and calculates the earned run average for each pitcher. 
 
