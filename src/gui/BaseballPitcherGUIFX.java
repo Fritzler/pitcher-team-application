@@ -17,6 +17,9 @@ Changes: Added file output, see comments in insertButtonClicked() function
 
 Revision by: Ethan Kohn, 4/27/2020
 Changes: Moved file output to a separate function in fileIO package
+
+Revision by: Ethan Kohn, 4/29/2020
+Changes: Updated file output naming scheme to identify by the date of game
 */
 package gui;
 
@@ -213,6 +216,27 @@ public class BaseballPitcherGUIFX extends Application {
             atBatsLabel.getText().isEmpty() && 
             battersFacedLabel.getText().isEmpty() && 
             numberOfPitchesLable.getText().isEmpty() ) {
+            
+            String date = String.valueOf(gameDatesCombo.getValue());
+            String filename = "";
+            
+            switch (date) {
+                case "Feb 14, 2020":
+                    filename = "02-14-2020.txt";
+                    break;
+                case "Feb 15, 2020":
+                    filename = "02-15-2020.txt";
+                    break;
+                case "Feb 16, 2020":
+                    filename = "02-16-2020.txt";
+                    break;
+                case "Feb 22, 2020":
+                    filename = "02-22-2020.txt";
+                    break;
+                case "Mar 11, 2020":
+                    filename = "03-11-2020.txt";
+                    break;
+            }
         
             // Convert everything to variables of the proper type
             // This is to make the creation of the pitcher object easier to read
@@ -226,6 +250,7 @@ public class BaseballPitcherGUIFX extends Application {
             int atBats = Integer.parseInt(atBatsField.getText());
             int battersFaced = Integer.parseInt(battersFacedField.getText());
             int numPitches = Integer.parseInt(numberOfPitchesField.getText());
+            
         
         
             /* THIS IS THE ORDER OF THE VARIABLES FROM Pitcher.java
@@ -242,11 +267,16 @@ public class BaseballPitcherGUIFX extends Application {
             * int numberPitches
             * ============================
             */
+            // Additionally, filename must be passed to make sure we we're
+            // writing to the correct file.
+            
+            
             // Make an object out of the items entered by the user
             // Send this to PitcherFileIO methods to do stuff with it
              Pitcher p = new Pitcher(playerName, inningsPitched, baseHits,
                                 runsScored, earnedRuns, walksAllowed,
-                                strikeOuts, atBats, battersFaced, numPitches);
+                                strikeOuts, atBats, battersFaced, numPitches,
+                                filename);
         
         
             // Output the data to the file
@@ -266,7 +296,47 @@ public class BaseballPitcherGUIFX extends Application {
     public static void main(String[] args) {
          // Attempt to create a pitchers.txt file if one does not already exist
         try {
-            String fileString = "pitchers.txt";
+            String fileString = "02-14-2020.txt";
+            Path filePath = Paths.get(fileString);
+            if (Files.notExists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
+        try {
+            String fileString = "02-15-2020.txt";
+            Path filePath = Paths.get(fileString);
+            if (Files.notExists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
+        try {
+            String fileString = "02-16-2020.txt";
+            Path filePath = Paths.get(fileString);
+            if (Files.notExists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
+        try {
+            String fileString = "02-22-2020.txt";
+            Path filePath = Paths.get(fileString);
+            if (Files.notExists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
+        try {
+            String fileString = "03-11-2020.txt";
             Path filePath = Paths.get(fileString);
             if (Files.notExists(filePath)) {
                 Files.createFile(filePath);
