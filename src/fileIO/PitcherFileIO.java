@@ -1,3 +1,13 @@
+/* This class is designed to handle any kind of file input or output required
+ * by the program and process pitcher objects as needed for this function.
+ * Created By: Ethan Kohn
+ * Created: April 25, 2020
+ 
+ * Changelog:
+ * Revision: April 29, 2020
+ * Made OutputToFile() process a date for the filename
+*/
+
 package fileIO;
 
 import java.io.*;
@@ -8,7 +18,7 @@ public class PitcherFileIO {
     
     public void OutputToFile(Pitcher p){
         // Set the path of the .txt file to the same as the java file
-        Path pitcherFilePath = Paths.get("pitchers.txt");
+        Path pitcherFilePath = Paths.get(p.getFilename());
         
         // Attempt to prevent a FileNotFoundException
         if (Files.exists(pitcherFilePath)) {
