@@ -7,7 +7,6 @@
  * Revision: April 29, 2020
  * Made OutputToFile() process a date for the filename
 */
-
 package fileIO;
 
 import java.io.*;
@@ -18,7 +17,7 @@ public class PitcherFileIO {
     
     public void OutputToFile(Pitcher p){
         // Set the path of the .txt file to the same as the java file
-        Path pitcherFilePath = Paths.get(p.getFilename());
+        Path pitcherFilePath = Paths.get("pitchers.txt");
         
         // Attempt to prevent a FileNotFoundException
         if (Files.exists(pitcherFilePath)) {
@@ -39,10 +38,12 @@ public class PitcherFileIO {
                 out.print(p.getStrikeOuts() + "\t");
                 out.print(p.getAtBats() + "\t");
                 out.print(p.getBattersFaced() + "\t");
-                out.println(p.getNumberPitches()); // Final entry, no \t,
+                out.println(p.getNumberPitches() + "\t");
+                out.print(p.getGameDate()); // Final entry, no \t,
 
                 // Close the file
                 out.close();
+                System.out.println("Added to the file successfully.");
             } catch (IOException e) {
                  System.out.println("Error on writing to file: " + e);
             }           
