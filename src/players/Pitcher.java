@@ -8,9 +8,6 @@ package players;
  * Changelog:
  * Revision: April 25, 2020
  * Fixed Data Type of inningsPitched
-
- * Revision: April 29, 2020
- * Added filename string to pass along to file i/o
 */
 public class Pitcher {
     
@@ -27,11 +24,10 @@ public class Pitcher {
     private int battersFaced;
     private int numberPitches;
     private String filename;
-    private String gameDate;
     
     // constructor
     public Pitcher(String name, double ip, int hits, int runs, int er, int bb, int so,
-            int ab, int bf, int np, String fn, String date){
+            int ab, int bf, int np, String fn){
         this.playerName = name;
         this.inningsPitched = ip;
         this.baseHits = hits;
@@ -43,7 +39,6 @@ public class Pitcher {
         this.battersFaced = bf;
         this.numberPitches = np;
         this.filename = fn;
-        this.gameDate = date;
     }
     
 
@@ -149,12 +144,4 @@ public class Pitcher {
         this.filename = filename;
     }
     
-    // Date of Game
-    public String getGameDate() {
-        return gameDate;
-    }
-
-    public void getGameDate(String game) {
-        this.gameDate = game;
-    }
 }
