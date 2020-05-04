@@ -27,6 +27,11 @@ Changes: Addition of Print Report Button and Help Button;
 
 Revision by: Ethan Kohn, 05/04/2020
 Changes: Implementation of "print report" button
+
+Revision by: Christopher Thurn, 05/04/2020
+Changes: Addition of Reset Button, Modification of Insert Button;
+            Reset Button resets form;
+            Form now resets after user hits submit button;
 */
 package gui;
 
@@ -100,7 +105,7 @@ public class BaseballPitcherGUIFX extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
                 
-        Scene scene = new Scene(grid, 460, 500);
+        Scene scene = new Scene(grid, 600, 500);
         
         grid.add(new Label("Player Name:"), 0, 0);
         playerNameField = new TextField();
@@ -195,11 +200,15 @@ public class BaseballPitcherGUIFX extends Application {
         Button helpReportButton = new Button("Help");
         helpReportButton.setOnAction(event -> helpReportButtonClicked());
         
-        HBox buttonBox = new HBox(20);
-        buttonBox.getChildren().add(printReportButton);
+        Button resetButton = new Button("Reset");
+        resetButton.setOnAction(event -> resetButtonClicked());
+        
+        HBox buttonBox = new HBox(15);
         buttonBox.getChildren().add(insertButton);
-        buttonBox.getChildren().add(exitButton);
+        buttonBox.getChildren().add(printReportButton);
+        buttonBox.getChildren().add(resetButton);
         buttonBox.getChildren().add(helpReportButton);
+        buttonBox.getChildren().add(exitButton);
         buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
         grid.add(buttonBox, 0, 12, 2, 1);
                 
@@ -303,17 +312,43 @@ public class BaseballPitcherGUIFX extends Application {
             p = null;
             
             System.out.println("File Entry Added");
+            
+            playerNameField.setText("");
+            inningsPitchedField.setText("");
+            baseHitsField.setText("");
+            runsScoredField.setText("");
+            earnedRunField.setText("");
+            walksAllowedField.setText("");
+            strikeOutField.setText("");
+            atBatsField.setText("");
+            battersFacedField.setText("");
+            numberOfPitchesField.setText("");
 
         }
     }
     /* Insert Button Code End */
     
+    /* Reset Button Code Start */
+    private void resetButtonClicked() {
+        playerNameField.setText("");
+        inningsPitchedField.setText("");
+        baseHitsField.setText("");
+        runsScoredField.setText("");
+        earnedRunField.setText("");
+        walksAllowedField.setText("");
+        strikeOutField.setText("");
+        atBatsField.setText("");
+        battersFacedField.setText("");
+        numberOfPitchesField.setText("");
+     }
+    /* Reset Button Code End */
+    
+    
     /* Print Report Button Code Start */
     private void printReportButtonClicked() {
-
         String date = String.valueOf(gameDatesCombo.getValue());
             String filename = "";
-            
+
             switch (date) {
                 case "Feb 14, 2020":
                     filename = "02-14-2020.txt";
@@ -331,10 +366,11 @@ public class BaseballPitcherGUIFX extends Application {
                     filename = "03-11-2020.txt";
                     break;
             }
-            
+
             io.ImportFile(filename);
     }
     /* Print Report Button Code End */
+    
     
     /* Help Menu Code Start */
     Alert help = new Alert(AlertType.NONE); 
@@ -365,7 +401,7 @@ public class BaseballPitcherGUIFX extends Application {
         System.exit(0);   // 0 indicates a normal exit
     }
     /* Exit Button Code End */
-
+    
     
     /* Main Method Start */
     public static void main(String[] args) {
