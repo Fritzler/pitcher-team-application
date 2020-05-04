@@ -20,6 +20,10 @@ Changes: Moved file output to a separate function in fileIO package
 
 Revision by: Ethan Kohn, 4/29/2020
 Changes: Updated file output naming scheme to identify by the date of game
+
+Revision by: Christopher Thurn, 05/04/2020
+Changes: Addition of Print Report Button and Help Button; 
+            Help Button has instructions to help user properly use the program.
 */
 package gui;
 
@@ -46,6 +50,8 @@ import java.io.*;
 import java.nio.file.*;
 import players.Pitcher;
 import fileIO.PitcherFileIO;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -91,7 +97,7 @@ public class BaseballPitcherGUIFX extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
                 
-        Scene scene = new Scene(grid, 700, 500);
+        Scene scene = new Scene(grid, 460, 500);
         
         grid.add(new Label("Player Name:"), 0, 0);
         playerNameField = new TextField();
@@ -180,9 +186,17 @@ public class BaseballPitcherGUIFX extends Application {
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(event -> exitButtonClicked());
         
+        Button printReportButton = new Button("Print Report");
+        printReportButton.setOnAction(event -> printReportButtonClicked());
+        
+        Button helpReportButton = new Button("Help");
+        helpReportButton.setOnAction(event -> helpReportButtonClicked());
+        
         HBox buttonBox = new HBox(20);
+        buttonBox.getChildren().add(printReportButton);
         buttonBox.getChildren().add(insertButton);
         buttonBox.getChildren().add(exitButton);
+        buttonBox.getChildren().add(helpReportButton);
         buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
         grid.add(buttonBox, 0, 12, 2, 1);
                 
@@ -190,6 +204,7 @@ public class BaseballPitcherGUIFX extends Application {
         primaryStage.show();
     }
     
+    /* Insert Button Code Start */
     private void insertButtonClicked() {
         //Validates the information presnt in the form to ensure it is proper.
         Validator v = new Validator();
@@ -203,7 +218,7 @@ public class BaseballPitcherGUIFX extends Application {
         atBatsLabel.setText(v.isInteger(atBatsField.getText(), "At-Bats") );
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
         numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );   
-        dateofGameLabel.setText(gameDatesCombo.getValue() + " is the date of the game.");
+        dateofGameLabel.setText(gameDatesCombo.getValue() + "");
         
         // Only run the following if everything passes validation
         if (playerNameLabel.getText().isEmpty() && 
@@ -250,8 +265,6 @@ public class BaseballPitcherGUIFX extends Application {
             int atBats = Integer.parseInt(atBatsField.getText());
             int battersFaced = Integer.parseInt(battersFacedField.getText());
             int numPitches = Integer.parseInt(numberOfPitchesField.getText());
-            
-        
         
             /* THIS IS THE ORDER OF THE VARIABLES FROM Pitcher.java
             * ============================
@@ -285,14 +298,51 @@ public class BaseballPitcherGUIFX extends Application {
 
             // Remove reference to the objects when we're done with them
             p = null;
+            
+            System.out.println("File Entry Added");
 
         }
     }
+    /* Insert Button Code End */
     
+    /* Print Report Button Code Start */
+    private void printReportButtonClicked() {
+        
+    }
+    /* Print Report Button Code End */
+    
+    /* Help Menu Code Start */
+    Alert help = new Alert(AlertType.NONE); 
+    private void helpReportButtonClicked() {
+                help.setAlertType(AlertType.INFORMATION); 
+                
+                help.setTitle("Pitcher Program - Help Menu");
+                
+                help.setHeaderText("How to use Pitcher Program");
+  
+                // set content text 
+                help.setContentText("Enter the statistics into the form to add a pitcher to the form.\n"
+                        + "\n"
+                        + "Press insert information to add the information to the document.\n"
+                        + "\n"
+                        + "Press Print Report to print the report of that given day to display information on all pitchers entered.\n"
+                        + "\n"
+                        + "Press Exit to end the program.");
+  
+                // show the dialog 
+                help.show();
+    }
+    /* Help Menu Code End */
+    
+    
+    /* Exit Button Code Start */
     private void exitButtonClicked() {
         System.exit(0);   // 0 indicates a normal exit
     }
+    /* Exit Button Code End */
 
+    
+    /* Main Method Start */
     public static void main(String[] args) {
          // Attempt to create a pitchers.txt file if one does not already exist
         try {
@@ -349,5 +399,6 @@ public class BaseballPitcherGUIFX extends Application {
         launch(args);
         
     }
+    /* Main Method End */
     
 }
