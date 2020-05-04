@@ -310,6 +310,7 @@ public class BaseballPitcherGUIFX extends Application {
     
     /* Print Report Button Code Start */
     private void printReportButtonClicked() {
+
         String date = String.valueOf(gameDatesCombo.getValue());
             String filename = "";
             

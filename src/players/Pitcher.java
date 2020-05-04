@@ -8,9 +8,6 @@ package players;
  * Changelog:
  * Revision: April 25, 2020
  * Fixed Data Type of inningsPitched
-
- * Revision: April 29, 2020
- * Added filename string to pass along to file i/o
 */
 public class Pitcher {
     
