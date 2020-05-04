@@ -24,6 +24,9 @@ Changes: Updated file output naming scheme to identify by the date of game
 Revision by: Christopher Thurn, 05/04/2020
 Changes: Addition of Print Report Button and Help Button; 
             Help Button has instructions to help user properly use the program.
+
+Revision by: Ethan Kohn, 05/04/2020
+Changes: Implementation of "print report" button
 */
 package gui;
 
@@ -307,7 +310,29 @@ public class BaseballPitcherGUIFX extends Application {
     
     /* Print Report Button Code Start */
     private void printReportButtonClicked() {
-        
+
+        String date = String.valueOf(gameDatesCombo.getValue());
+            String filename = "";
+            
+            switch (date) {
+                case "Feb 14, 2020":
+                    filename = "02-14-2020.txt";
+                    break;
+                case "Feb 15, 2020":
+                    filename = "02-15-2020.txt";
+                    break;
+                case "Feb 16, 2020":
+                    filename = "02-16-2020.txt";
+                    break;
+                case "Feb 22, 2020":
+                    filename = "02-22-2020.txt";
+                    break;
+                case "Mar 11, 2020":
+                    filename = "03-11-2020.txt";
+                    break;
+            }
+            
+            io.ImportFile(filename);
     }
     /* Print Report Button Code End */
     
