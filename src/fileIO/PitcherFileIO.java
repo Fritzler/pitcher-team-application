@@ -10,6 +10,10 @@
  * Revision: May 5, 2020
  * Added code functionality to ImportFile() function
  * Renamed OutputReport() to SummaryReport()
+ *
+ * Revision: May 6, 2020
+ * Made SummaryReport output to a formatted .txt file 
+ * Made the formatted .txt empty out after every report print
 */
 
 package fileIO;
@@ -62,6 +66,33 @@ public class PitcherFileIO {
     }
     
     public void ImportFile(String filename){
+        // We need to output this to a file for printing later
+        // Create a name for a formatted version of the file
+        String formattedFilePathString = "formatted " + filename;
+        Path formattedFilePath = Paths.get(formattedFilePathString);
+        
+        // Attempt to create a formatted .txt file
+        try {
+            if (Files.notExists(formattedFilePath)) {
+                Files.createFile(formattedFilePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error on creating writeable file: " + e);
+        }
+        
+        // Blank out the formatted file every time we call this function!
+        if (Files.exists(formattedFilePath)) {
+            File pitcherFileCleaner = formattedFilePath.toFile();
+            try {
+                PrintWriter clean = new PrintWriter(pitcherFileCleaner);
+                clean.close();
+            } catch (IOException e) {
+                System.out.println("Error on emptying old report file: " 
+                                    + e);
+            }
+        }
+        
+        // Try to read the file of choice
         try {
             BufferedReader in = new BufferedReader(
                             new FileReader(filename));
@@ -96,7 +127,43 @@ public class PitcherFileIO {
                     nf.setMaximumFractionDigits(2);
                     String ERAFormatted = nf.format(ERA);
                     
+                    // Attempt to prevent a FileNotFoundException
+                    if (Files.exists(formattedFilePath)) {
+                        File pitcherFileFormatted = formattedFilePath.toFile();
+                        // Attempt to open the file to write
+                        try {
+                            PrintWriter out = new PrintWriter( 
+                                            new BufferedWriter( 
+                                            new FileWriter(pitcherFileFormatted, true)));
+                            // We have to append if we're in the loop
+                            // or else only the last line of data will be written
+                            
+                            // Output to file
+                            out.println("Player Name: " + playerName
+                            + " | Innings Pitched: " + inningsPitched
+                            + " | Base Hits: " + baseHits
+                            + " | Runs Scored: " + runsScored
+                            + " | Earned Runs: " + earnedRuns
+                            + " | Walks Allowed: " + walksAllowed
+                            + " | Strike Outs: " + strikeOuts
+                            + " | At Bats: " + atBats
+                            + " | Batters Faced: " + battersFaced
+                            + " | Number of Pitches: " + numberPitches
+                            + " | ERA: " + ERAFormatted
+                            + "\n");
+                            out.close();
+                        } catch (IOException e) {
+                             System.out.println("Error on writing to file: " 
+                                                + e);
+                        }
+                    }
+                    
                     // Output formatted text for the player's stats
+                    // *Mainly for confirmation purposes*
+                    // This is how it should appear when request to print is
+                    // called
+                    System.out.println("Output to file: " 
+                                    + formattedFilePathString);
                     System.out.println("Player Name: " + playerName
                             + " | Innings Pitched: " + inningsPitched
                             + " | Base Hits: " + baseHits
