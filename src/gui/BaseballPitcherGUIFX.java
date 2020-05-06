@@ -37,11 +37,12 @@ Revision by: Christopher Thurn, 05/05/2020
 Changes: GUI Remodel; New Information on Pages
             Moved Buttons Around;
             Changed dates;
+
+Revision by: Christopher Thurn, 05/06/2020
+Changes: GUI Rework, addition of checkboxes.
+        Button Addition.
 */
-
 package gui;
-
-
 
 import players.Pitcher;
 import javafx.application.Application;
@@ -63,8 +64,11 @@ import java.io.*;
 import java.nio.file.*;
 import players.Pitcher;
 import fileIO.PitcherFileIO;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Separator;
 
 
 /**
@@ -97,11 +101,13 @@ public class BaseballPitcherGUIFX extends Application {
     private Label battersFacedLabel;
     private Label numberOfPitchesLable;
     private Label dateofGameLabel;
+    private Label checkBoxesLabel;
     
     // I/O object for any kind of input or output required
     // see fileIO.PitcherFileIO for details
     PitcherFileIO io = new PitcherFileIO();
     
+    /* Adding all items to the Scene Start */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Baseball Pitcher Stats - Entry Form");
@@ -112,72 +118,97 @@ public class BaseballPitcherGUIFX extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
                 
-        Scene scene = new Scene(grid, 700, 550);
+        Scene scene = new Scene(grid, 800, 650);
         
-        grid.add(new Label("Player Name:"), 0, 0);
+        /* Start Button - Start */
+        Button helpReportButton = new Button("Start Here");
+        helpReportButton.setOnAction(event -> helpReportButtonClicked());
+        
+        Button exitButton = new Button("Exit");
+        exitButton.setOnAction(event -> exitButtonClicked());
+        
+        HBox startButton = new HBox(10);
+        startButton.getChildren().add(helpReportButton);
+        startButton.getChildren().add(exitButton);
+        startButton.setAlignment(Pos.TOP_LEFT);
+        grid.add(startButton, 0, 0, 1, 1);
+        /* Start Button - End */
+        
+        //Creates the nice line to look at, breaking up the sections.
+        Separator separator0 = new Separator(Orientation.HORIZONTAL);
+        grid.add(separator0, 0, 1, 3, 1);
+        
+         /*<---------- SECTION BREAK ---------->*/
+        
+        /* Insert Player Information Form - Start */
+        grid.add(new Label("Player Name:"), 0, 2);
         playerNameField = new TextField();
-        grid.add(playerNameField, 1, 0);
+        grid.add(playerNameField, 1, 2);
         playerNameLabel = new Label();
-        grid.add(playerNameLabel, 2, 0);
+        grid.add(playerNameLabel, 2, 2);
         
-        grid.add(new Label("Innings Pitched(IP):"), 0, 1);
+        grid.add(new Label("Innings Pitched(IP):"), 0, 3);
         inningsPitchedField = new TextField();
-        grid.add(inningsPitchedField, 1, 1);
+        grid.add(inningsPitchedField, 1, 3);
         inningsPitchedLabel = new Label();
-        grid.add(inningsPitchedLabel, 2, 1);
+        grid.add(inningsPitchedLabel, 2, 3);
         
-        grid.add(new Label("Base Hits(H):"), 0, 2);
+        grid.add(new Label("Base Hits(H):"), 0, 4);
         baseHitsField = new TextField();
-        grid.add(baseHitsField, 1, 2);
+        grid.add(baseHitsField, 1, 4);
         baseHitsLabel = new Label();
-        grid.add(baseHitsLabel, 2, 2);
+        grid.add(baseHitsLabel, 2, 4);
         
-        grid.add(new Label("Runs Scored(R):"), 0, 3);
+        grid.add(new Label("Runs Scored(R):"), 0, 5);
         runsScoredField = new TextField();
-        grid.add(runsScoredField, 1, 3);
+        grid.add(runsScoredField, 1, 5);
         runsScoredLabel = new Label();
-        grid.add(runsScoredLabel, 2, 3);
+        grid.add(runsScoredLabel, 2, 5);
         
-        grid.add(new Label("Earned Runs(ER):"), 0, 4);
+        grid.add(new Label("Earned Runs(ER):"), 0, 6);
         earnedRunField = new TextField();
-        grid.add(earnedRunField, 1, 4);
+        grid.add(earnedRunField, 1, 6);
         earnedRunLabel = new Label();
-        grid.add(earnedRunLabel, 2, 4);
+        grid.add(earnedRunLabel, 2, 6);
         
-        grid.add(new Label("Walks Allowed(BB):"), 0, 5);
+        grid.add(new Label("Walks Allowed(BB):"), 0, 7);
         walksAllowedField = new TextField();
-        grid.add(walksAllowedField, 1, 5);
+        grid.add(walksAllowedField, 1, 7);
         walksAllowedLabel = new Label();
-        grid.add(walksAllowedLabel, 2, 5);
+        grid.add(walksAllowedLabel, 2, 7);
         
-        grid.add(new Label("Strike Out(SO):"), 0, 6);
+        grid.add(new Label("Strike Out(SO):"), 0, 8);
         strikeOutField = new TextField();
-        grid.add(strikeOutField, 1, 6);
+        grid.add(strikeOutField, 1, 8);
         strikeOutLabel = new Label();
-        grid.add(strikeOutLabel, 2, 6);
+        grid.add(strikeOutLabel, 2, 8);
         
-        grid.add(new Label("At-Bats(AB):"), 0, 7);
+        grid.add(new Label("At-Bats(AB):"), 0, 9);
         atBatsField = new TextField();
-        grid.add(atBatsField, 1, 7);
+        grid.add(atBatsField, 1, 9);
         atBatsLabel = new Label();
-        grid.add(atBatsLabel, 2, 7);
+        grid.add(atBatsLabel, 2, 9);
         
-        grid.add(new Label("Batters Faced(BF):"), 0, 8);
+        grid.add(new Label("Batters Faced(BF):"), 0, 10);
         battersFacedField = new TextField();
-        grid.add(battersFacedField, 1, 8);
+        grid.add(battersFacedField, 1, 10);
         battersFacedLabel = new Label();
-        grid.add(battersFacedLabel, 2, 8);
+        grid.add(battersFacedLabel, 2, 10);
 
-        grid.add(new Label("Number of Pitches(NP):"), 0, 9);
+        grid.add(new Label("Number of Pitches(NP):"), 0, 11);
         numberOfPitchesField = new TextField();
-        grid.add(numberOfPitchesField, 1, 9);
+        grid.add(numberOfPitchesField, 1, 11);
         numberOfPitchesLable = new Label();
-        grid.add(numberOfPitchesLable, 2, 9);
+        grid.add(numberOfPitchesLable, 2, 11);
+
+       /* Combo Box Section Start */
+        Button insertButton = new Button("Insert Data");
+        insertButton.setOnAction(event -> insertButtonClicked());
         
-        
-        
-        /* Combo Box Section Start */
-        grid.add(new Label("Game Date:"), 0, 10);
+        Button resetButton = new Button("Reset Form");
+        resetButton.setOnAction(event -> resetButtonClicked());
+       
+        grid.add(new Label("Game Date:"), 0, 12);
         gameDatesCombo = new ComboBox();
         gameDatesCombo.getItems().addAll("Select a Date",
                 "Feb 14, 2020", 
@@ -187,20 +218,28 @@ public class BaseballPitcherGUIFX extends Application {
                 "Mar 11, 2020");
         gameDatesCombo.getSelectionModel().select(0);
         dateofGameLabel = new Label();
-        grid.add(dateofGameLabel, 2, 10);
-        
-        Button insertButton = new Button("Insert Data");
-        insertButton.setOnAction(event -> insertButtonClicked());
+        grid.add(dateofGameLabel, 2, 12);
         
         HBox comboBox = new HBox(10);
         comboBox.getChildren().add(gameDatesCombo);
         comboBox.getChildren().add(insertButton);
+        comboBox.getChildren().add(resetButton);
         comboBox.setAlignment(Pos.BOTTOM_LEFT);
-        grid.add(comboBox, 1, 10, 2, 1);
+        grid.add(comboBox, 1, 12, 2, 1);
         /* Combo Box Section End */
         
+        /* Insert Player Information Form - End */
+        
+        //Creates the nice line to look at, breaking up the sections.
+        Separator separator1 = new Separator(Orientation.HORIZONTAL);
+        grid.add(separator1, 0, 13, 3, 1);
+        
+        
+        /*<---------- SECTION BREAK ---------->*/
+        
+        
         /* Game Date Reselection Combo Box Section Start */
-        grid.add(new Label("Game Date Reprint:"), 0, 11);
+        grid.add(new Label("Game Date Reprint:"), 0, 14);
         gameDatesReprintCombo = new ComboBox();
         gameDatesReprintCombo.getItems().addAll("Select a Date",
                 "Feb 14, 2020", 
@@ -210,42 +249,60 @@ public class BaseballPitcherGUIFX extends Application {
                 "Mar 11, 2020");
         gameDatesReprintCombo.getSelectionModel().select(0);
         
+        //Creates the nice line to look at, breaking up the sections.
+        Separator separator2 = new Separator(Orientation.HORIZONTAL);
+        grid.add(separator2, 0, 13, 3, 1);
+        
         Button printReportButton = new Button("Print Day Report");
         printReportButton.setOnAction(event -> printReportButtonClicked());
+        
+        Button resetDateButton = new Button("Reset Date");
+        resetDateButton.setOnAction(event -> resetDateButtonClicked());
         
         HBox comboDateBox = new HBox(10);
         comboDateBox.getChildren().add(gameDatesReprintCombo);
         comboDateBox.getChildren().add(printReportButton);
+        comboDateBox.getChildren().add(resetDateButton);
         comboDateBox.setAlignment(Pos.BOTTOM_LEFT);
-        grid.add(comboDateBox, 1, 11, 1, 1);
-        /* Game Date Reselection Combo Box Section End */
-        
-        
-        /* Creating the necessary buttons - Start */
-        Button helpReportButton = new Button("Start Here");
-        helpReportButton.setOnAction(event -> helpReportButtonClicked());
-        
-        Button resetButton = new Button("Reset");
-        resetButton.setOnAction(event -> resetButtonClicked());
-        
-        Button exitButton = new Button("Exit");
-        exitButton.setOnAction(event -> exitButtonClicked());
-        /* Creating the necessary buttons - End */
-        
-        
-        /* Adding the necessary buttons for the program to work - Start */
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().add(helpReportButton);
-        buttonBox.getChildren().add(resetButton);
-        buttonBox.getChildren().add(exitButton);
-        buttonBox.setAlignment(Pos.BOTTOM_LEFT);
-        grid.add(buttonBox, 0, 12, 2, 1);
-        /* Adding the necessary buttons for the program to work - End */
+        grid.add(comboDateBox, 1, 14, 1, 1);
+        /* Game Date Reselection Combo Box Section End */       
 
+        
+         /*<---------- SECTION BREAK ---------->*/
+        
+        //Creates the nice line to look at, breaking up the sections.
+        Separator separator3 = new Separator(Orientation.HORIZONTAL);
+        grid.add(separator3, 0, 16, 3, 1);
+        
+        /* File Name Checkboxes Start */
+        grid.add(new Label("Select all files you wish to reprint to get an average of the player stats."), 0, 17, 2, 1);
+        
+        CheckBox checkbox1 = new CheckBox("Feb 14, 2020");
+        grid.add(checkbox1, 0, 18);
+        
+        CheckBox checkbox2 = new CheckBox("Feb 15, 2020");
+        grid.add(checkbox2, 1, 18);
+        
+        CheckBox checkbox3 = new CheckBox("Feb 16, 2020");
+        grid.add(checkbox3, 0, 19);
+        
+        CheckBox checkbox4 = new CheckBox("Feb 22, 2020");
+        grid.add(checkbox4, 1, 19);
+        
+        CheckBox checkbox5 = new CheckBox("Mar 11, 2020");
+        grid.add(checkbox5, 0, 20);
+        
+        Button printCumulativeReportButton = new Button("Print Cumulative Report");
+        printCumulativeReportButton.setOnAction(event -> printCumulativeReportButtonClicked());
+        grid.add(printCumulativeReportButton, 1, 20);
+        
+        /* File Name Checkboxes End */
+        
         /* Setting the Stage for the Program to Run */
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    /* Adding all items to the Scene End */
     
     /* Insert Button Code Start */
     private void insertButtonClicked() {
@@ -260,8 +317,7 @@ public class BaseballPitcherGUIFX extends Application {
         strikeOutLabel.setText(v.isInteger(strikeOutField.getText(), "Strike Outs") );
         atBatsLabel.setText(v.isInteger(atBatsField.getText(), "At-Bats") );
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
-        numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );   
-        dateofGameLabel.setText("Selected Date is " + gameDatesCombo.getValue());
+        numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );
         
         // Only run the following if everything passes validation
         if (playerNameLabel.getText().isEmpty() && 
@@ -371,7 +427,8 @@ public class BaseballPitcherGUIFX extends Application {
     }
     /* Insert Button Code End */
     
-    /* Reset Button Code Start */
+    
+    /* Reset Form Button Code Start */
     private void resetButtonClicked() {
         playerNameField.setText("");
         inningsPitchedField.setText("");
@@ -385,8 +442,6 @@ public class BaseballPitcherGUIFX extends Application {
         numberOfPitchesField.setText("");
         gameDatesCombo.setValue("Select a Date");
         
-        gameDatesReprintCombo.setValue("Select a Date");
-        
         playerNameLabel.setText("");
         inningsPitchedLabel.setText("");
         baseHitsLabel.setText("");
@@ -399,7 +454,23 @@ public class BaseballPitcherGUIFX extends Application {
         numberOfPitchesLable.setText("");
         dateofGameLabel.setText("");
      }
-    /* Reset Button Code End */
+    /* Reset Form Button Code End */
+    
+    
+    /* Reset Print Date Button Code Start */
+    private void resetDateButtonClicked() 
+    {
+        gameDatesReprintCombo.setValue("Select a Date");
+    }
+    /* Reset Print Date Button Code End */
+    
+    
+    /* Print Cumulative Report Button End */
+    private void printCumulativeReportButtonClicked()
+    {
+        /* Add the code for the Final Project Part Here */
+    }
+    /* Print Cumulative Report Button End */
     
     
     /* Print Report Button Code Start */
@@ -520,6 +591,5 @@ public class BaseballPitcherGUIFX extends Application {
         launch(args);
         
     }
-    /* Main Method End */
-    
+    /* Main Method End */ 
 }

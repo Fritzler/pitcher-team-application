@@ -22,6 +22,7 @@ import java.io.*;
 import java.nio.file.*;
 import players.Pitcher;
 import java.text.NumberFormat;
+import javafx.scene.control.Alert;
 
 public class PitcherFileIO {
     
@@ -180,6 +181,21 @@ public class PitcherFileIO {
                     // Do it again until we're out of pitchers
                     line = in.readLine();
                 }
+                
+                /*Creating the Alert that displays the Output*/
+                    Alert output = new Alert(Alert.AlertType.NONE);
+                    output.setAlertType(Alert.AlertType.INFORMATION); 
+                    output.setTitle("Pitcher Program - Pitcher Report.");
+                    output.setHeaderText("Document Name: " + filename);
+                    output.setContentText("The report printed out to the console. You are able to copy and paste this information as you need.\n"
+                            + "\n"
+                            + " We apologize for any inconvenience and are working on an update to this method of printing.\n"
+                            + "\n"
+                            + "Please also see the directory as a copy of this file is located there as well.\n"
+                            + "\n"
+                            + "Thank you for using the Pitcher Program.");
+                    output.show();
+                
                 // Close the file to free resources
                 in.close();
             } catch (IOException e) {
@@ -189,5 +205,4 @@ public class PitcherFileIO {
             System.out.println("Error, file not found." + e);
         }
     }
-    
 }
