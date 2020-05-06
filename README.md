@@ -19,8 +19,9 @@ Each pitcher’s statistics should be added to the file for that date. - Achieve
 
 The format of the file is up to the team to decide, binary, flat or SQL-DB it is your decision. - Achieved - Flat
 
-When the file is read, it should produce a report that lists the statistics for all pitchers in that game and calculates the earned run average for each pitcher. 
+When the file is read, it should produce a report that lists the statistics for all pitchers in that game and calculates the earned run average for each pitcher. - Achieved.
 
-The report should be saved in a file in a format for printing.
+The report should be saved in a file in a format for printing. - Achieved? They are saved as txt files which can be opened and saved.
+Also they print out in the console, allowing the user to copy and paste currently.
 
 There should also be a program that will read multiple game files and summarize the statistics on each pitcher for a specified number of games.

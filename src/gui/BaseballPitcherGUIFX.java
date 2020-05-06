@@ -27,8 +27,20 @@ Changes: Addition of Print Report Button and Help Button;
 
 Revision by: Ethan Kohn, 05/04/2020
 Changes: Implementation of "print report" button
+
+Revision by: Christopher Thurn, 05/04/2020
+Changes: Addition of Reset Button, Modification of Insert Button;
+            Reset Button resets form;
+            Form now resets after user hits submit button;
+
+Revision by: Christopher Thurn, 05/05/2020
+Changes: GUI Remodel; New Information on Pages
+            Moved Buttons Around;
+            Changed dates;
 */
+
 package gui;
+
 
 
 import players.Pitcher;
@@ -41,12 +53,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -55,6 +65,7 @@ import players.Pitcher;
 import fileIO.PitcherFileIO;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
 
 /**
  *
@@ -73,6 +84,7 @@ public class BaseballPitcherGUIFX extends Application {
     private TextField numberOfPitchesField;
     
     private ComboBox gameDatesCombo;
+    private ComboBox gameDatesReprintCombo;
     
     private Label playerNameLabel;
     private Label inningsPitchedLabel;
@@ -100,7 +112,7 @@ public class BaseballPitcherGUIFX extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
                 
-        Scene scene = new Scene(grid, 460, 500);
+        Scene scene = new Scene(grid, 700, 550);
         
         grid.add(new Label("Player Name:"), 0, 0);
         playerNameField = new TextField();
@@ -167,7 +179,8 @@ public class BaseballPitcherGUIFX extends Application {
         /* Combo Box Section Start */
         grid.add(new Label("Game Date:"), 0, 10);
         gameDatesCombo = new ComboBox();
-        gameDatesCombo.getItems().addAll("Feb 14, 2020", 
+        gameDatesCombo.getItems().addAll("Select a Date",
+                "Feb 14, 2020", 
                 "Feb 15, 2020", 
                 "Feb 16, 2020", 
                 "Feb 22, 2020", 
@@ -176,33 +189,60 @@ public class BaseballPitcherGUIFX extends Application {
         dateofGameLabel = new Label();
         grid.add(dateofGameLabel, 2, 10);
         
+        Button insertButton = new Button("Insert Data");
+        insertButton.setOnAction(event -> insertButtonClicked());
+        
         HBox comboBox = new HBox(10);
         comboBox.getChildren().add(gameDatesCombo);
+        comboBox.getChildren().add(insertButton);
         comboBox.setAlignment(Pos.BOTTOM_LEFT);
-        grid.add(comboBox, 1, 10, 1, 1);
+        grid.add(comboBox, 1, 10, 2, 1);
         /* Combo Box Section End */
         
+        /* Game Date Reselection Combo Box Section Start */
+        grid.add(new Label("Game Date Reprint:"), 0, 11);
+        gameDatesReprintCombo = new ComboBox();
+        gameDatesReprintCombo.getItems().addAll("Select a Date",
+                "Feb 14, 2020", 
+                "Feb 15, 2020", 
+                "Feb 16, 2020", 
+                "Feb 22, 2020", 
+                "Mar 11, 2020");
+        gameDatesReprintCombo.getSelectionModel().select(0);
         
-        Button insertButton = new Button("Insert Information");
-        insertButton.setOnAction(event -> insertButtonClicked());
+        Button printReportButton = new Button("Print Day Report");
+        printReportButton.setOnAction(event -> printReportButtonClicked());
+        
+        HBox comboDateBox = new HBox(10);
+        comboDateBox.getChildren().add(gameDatesReprintCombo);
+        comboDateBox.getChildren().add(printReportButton);
+        comboDateBox.setAlignment(Pos.BOTTOM_LEFT);
+        grid.add(comboDateBox, 1, 11, 1, 1);
+        /* Game Date Reselection Combo Box Section End */
+        
+        
+        /* Creating the necessary buttons - Start */
+        Button helpReportButton = new Button("Start Here");
+        helpReportButton.setOnAction(event -> helpReportButtonClicked());
+        
+        Button resetButton = new Button("Reset");
+        resetButton.setOnAction(event -> resetButtonClicked());
         
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(event -> exitButtonClicked());
+        /* Creating the necessary buttons - End */
         
-        Button printReportButton = new Button("Print Report");
-        printReportButton.setOnAction(event -> printReportButtonClicked());
         
-        Button helpReportButton = new Button("Help");
-        helpReportButton.setOnAction(event -> helpReportButtonClicked());
-        
-        HBox buttonBox = new HBox(20);
-        buttonBox.getChildren().add(printReportButton);
-        buttonBox.getChildren().add(insertButton);
-        buttonBox.getChildren().add(exitButton);
+        /* Adding the necessary buttons for the program to work - Start */
+        HBox buttonBox = new HBox(10);
         buttonBox.getChildren().add(helpReportButton);
-        buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
+        buttonBox.getChildren().add(resetButton);
+        buttonBox.getChildren().add(exitButton);
+        buttonBox.setAlignment(Pos.BOTTOM_LEFT);
         grid.add(buttonBox, 0, 12, 2, 1);
-                
+        /* Adding the necessary buttons for the program to work - End */
+
+        /* Setting the Stage for the Program to Run */
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -221,7 +261,7 @@ public class BaseballPitcherGUIFX extends Application {
         atBatsLabel.setText(v.isInteger(atBatsField.getText(), "At-Bats") );
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
         numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );   
-        dateofGameLabel.setText(gameDatesCombo.getValue() + "");
+        dateofGameLabel.setText("Selected Date is " + gameDatesCombo.getValue());
         
         // Only run the following if everything passes validation
         if (playerNameLabel.getText().isEmpty() && 
@@ -303,17 +343,70 @@ public class BaseballPitcherGUIFX extends Application {
             p = null;
             
             System.out.println("File Entry Added");
-
+            
+            playerNameField.setText("");
+            inningsPitchedField.setText("");
+            baseHitsField.setText("");
+            runsScoredField.setText("");
+            earnedRunField.setText("");
+            walksAllowedField.setText("");
+            strikeOutField.setText("");
+            atBatsField.setText("");
+            battersFacedField.setText("");
+            numberOfPitchesField.setText("");
+            gameDatesCombo.setValue("Select a Date");
+            
+            playerNameLabel.setText("");
+            inningsPitchedLabel.setText("");
+            baseHitsLabel.setText("");
+            runsScoredLabel.setText("");
+            earnedRunLabel.setText("");
+            walksAllowedLabel.setText("");
+            strikeOutLabel.setText("");
+            atBatsLabel.setText("");
+            battersFacedLabel.setText("");
+            numberOfPitchesLable.setText("");
+            dateofGameLabel.setText("");
         }
     }
     /* Insert Button Code End */
     
+    /* Reset Button Code Start */
+    private void resetButtonClicked() {
+        playerNameField.setText("");
+        inningsPitchedField.setText("");
+        baseHitsField.setText("");
+        runsScoredField.setText("");
+        earnedRunField.setText("");
+        walksAllowedField.setText("");
+        strikeOutField.setText("");
+        atBatsField.setText("");
+        battersFacedField.setText("");
+        numberOfPitchesField.setText("");
+        gameDatesCombo.setValue("Select a Date");
+        
+        gameDatesReprintCombo.setValue("Select a Date");
+        
+        playerNameLabel.setText("");
+        inningsPitchedLabel.setText("");
+        baseHitsLabel.setText("");
+        runsScoredLabel.setText("");
+        earnedRunLabel.setText("");
+        walksAllowedLabel.setText("");
+        strikeOutLabel.setText("");
+        atBatsLabel.setText("");
+        battersFacedLabel.setText("");
+        numberOfPitchesLable.setText("");
+        dateofGameLabel.setText("");
+     }
+    /* Reset Button Code End */
+    
+    
     /* Print Report Button Code Start */
     private void printReportButtonClicked() {
-
-        String date = String.valueOf(gameDatesCombo.getValue());
+        String date = String.valueOf(gameDatesReprintCombo.getValue());
             String filename = "";
-            
+
             switch (date) {
                 case "Feb 14, 2020":
                     filename = "02-14-2020.txt";
@@ -331,17 +424,18 @@ public class BaseballPitcherGUIFX extends Application {
                     filename = "03-11-2020.txt";
                     break;
             }
-            
+
             io.ImportFile(filename);
     }
     /* Print Report Button Code End */
+    
     
     /* Help Menu Code Start */
     Alert help = new Alert(AlertType.NONE); 
     private void helpReportButtonClicked() {
                 help.setAlertType(AlertType.INFORMATION); 
                 
-                help.setTitle("Pitcher Program - Help Menu");
+                help.setTitle("Pitcher Program - Start Menu");
                 
                 help.setHeaderText("How to use Pitcher Program");
   
@@ -350,9 +444,11 @@ public class BaseballPitcherGUIFX extends Application {
                         + "\n"
                         + "Press insert information to add the information to the document.\n"
                         + "\n"
-                        + "Press Print Report to print the report of that given day to display information on all pitchers entered.\n"
+                        + "Press Print Day Report to print the report of that given day* to display information on all pitchers entered.\n"
                         + "\n"
-                        + "Press Exit to end the program.");
+                        + "Press Exit to end the program.\n"
+                        + "\n"
+                        + "*Given Day is referenced to the date selected from the box.\n");
   
                 // show the dialog 
                 help.show();
@@ -365,7 +461,7 @@ public class BaseballPitcherGUIFX extends Application {
         System.exit(0);   // 0 indicates a normal exit
     }
     /* Exit Button Code End */
-
+    
     
     /* Main Method Start */
     public static void main(String[] args) {
