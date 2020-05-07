@@ -1,12 +1,9 @@
 /*
 Date Created: 4/23/2020
-
 Version: Updated Version 1.4
 Date Updated: 4/24/2020
-
 Class: CSD 2522 - Java Programming II
 Professor: Al Tokarsky
-
 Program Page Author: Christopher Thurn
 Program Purpose: To display the form and allow user entry of Baseball Pitcher
 Stats.
@@ -14,17 +11,16 @@ Stats.
 Revision by: Ethan Kohn, 4/25/2020
 Changes: Added file output, see comments in insertButtonClicked() function
          NOT A FINAL REVISION, READ COMMENTS
-
 Revision by: Ethan Kohn, 4/27/2020
+
 Changes: Moved file output to a separate function in fileIO package
-
 Revision by: Ethan Kohn, 4/29/2020
-Changes: Updated file output naming scheme to identify by the date of game
 
+Changes: Updated file output naming scheme to identify by the date of game
 Revision by: Christopher Thurn, 05/04/2020
+
 Changes: Addition of Print Report Button and Help Button; 
             Help Button has instructions to help user properly use the program.
-
 Revision by: Ethan Kohn, 05/04/2020
 Changes: Implementation of "print report" button
 
@@ -48,40 +44,35 @@ Changes: Pitcher field to combo box, Implementation of cumulative report button
 package gui;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Orientation;
+
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-
-import java.io.*;
-import java.nio.file.*;
-import players.Pitcher;
-import fileIO.PitcherFileIO;
-import javafx.geometry.Orientation;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Separator;
 
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+
+import java.io.*;
+import java.nio.file.*;
+import players.Pitcher;
+import fileIO.PitcherFileIO;
+
 import java.util.LinkedList;
 import java.util.List;
 
-
-/**
- *
- * @author Christopher
- */
 public class BaseballPitcherGUIFX extends Application {
-    private ComboBox playerNameCombo;
     private TextField inningsPitchedField;
     private TextField baseHitsField;
     private TextField runsScoredField;
@@ -92,6 +83,7 @@ public class BaseballPitcherGUIFX extends Application {
     private TextField battersFacedField;
     private TextField numberOfPitchesField;
     
+    private ComboBox playerNameCombo;
     private ComboBox gameDatesCombo;
     private ComboBox gameDatesReprintCombo;
     
@@ -111,7 +103,6 @@ public class BaseballPitcherGUIFX extends Application {
     private Label battersFacedLabel;
     private Label numberOfPitchesLable;
     private Label dateofGameLabel;
-    private Label checkBoxesLabel;
     
     // I/O object for any kind of input or output required
     // see fileIO.PitcherFileIO for details
@@ -147,8 +138,6 @@ public class BaseballPitcherGUIFX extends Application {
         //Creates the nice line to look at, breaking up the sections.
         Separator separator0 = new Separator(Orientation.HORIZONTAL);
         grid.add(separator0, 0, 1, 3, 1);
-        
-         /*<---------- SECTION BREAK ---------->*/
         
         /* Insert Player Information Form - Start */
         grid.add(new Label("Player Name:"), 0, 2);
@@ -256,10 +245,6 @@ public class BaseballPitcherGUIFX extends Application {
         Separator separator1 = new Separator(Orientation.HORIZONTAL);
         grid.add(separator1, 0, 13, 3, 1);
         
-        
-        /*<---------- SECTION BREAK ---------->*/
-        
-        
         /* Game Date Reselection Combo Box Section Start */
         grid.add(new Label("Game Date Reprint:"), 0, 14);
         gameDatesReprintCombo = new ComboBox();
@@ -287,9 +272,6 @@ public class BaseballPitcherGUIFX extends Application {
         comboDateBox.setAlignment(Pos.BOTTOM_LEFT);
         grid.add(comboDateBox, 1, 14, 1, 1);
         /* Game Date Reselection Combo Box Section End */       
-
-        
-         /*<---------- SECTION BREAK ---------->*/
         
         //Creates the nice line to look at, breaking up the sections.
         Separator separator3 = new Separator(Orientation.HORIZONTAL);
@@ -382,36 +364,16 @@ public class BaseballPitcherGUIFX extends Application {
             int atBats = Integer.parseInt(atBatsField.getText());
             int battersFaced = Integer.parseInt(battersFacedField.getText());
             int numPitches = Integer.parseInt(numberOfPitchesField.getText());
-        
-            /* THIS IS THE ORDER OF THE VARIABLES FROM Pitcher.java
-            * ============================
-            * String playerName
-            * double inningsPitched
-            * int baseHits
-            * int runsScored
-            * int earnedRuns
-            * int walksAllowed
-            * int strikeOuts
-            * int atBats
-            * int battersFaced
-            * int numberPitches
-            * ============================
-            */
-            // Additionally, filename must be passed to make sure we we're
-            // writing to the correct file.
-            
             
             // Make an object out of the items entered by the user
             // Send this to PitcherFileIO methods to do stuff with it
              Pitcher p = new Pitcher(playerName, inningsPitched, baseHits,
                                 runsScored, earnedRuns, walksAllowed,
                                 strikeOuts, atBats, battersFaced, numPitches,
-                                filename);
-        
+                                filename);      
         
             // Output the data to the file
             io.OutputToFile(p);
-        
 
             // Remove reference to the objects when we're done with them
             p = null;
@@ -673,10 +635,8 @@ public class BaseballPitcherGUIFX extends Application {
         } catch (IOException e) {
             System.out.println("Error on creating writeable file: " + e);
         }
-        
         // Launch the GUI
         launch(args);
-        
     }
     /* Main Method End */ 
 }
