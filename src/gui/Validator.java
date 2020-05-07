@@ -10,6 +10,9 @@ Professor: Al Tokarsky
 Program Page Author: Christopher Thurn
 Program Purpose: To validate the form information a user enters to ensure
 it is the correct type of data to be submitted. 
+
+Small Revision Author: Ethan Kohn
+Change: Added "isDefault" function for validating pitcher choice
 */
 package gui;
 
@@ -30,6 +33,14 @@ public class Validator {
     public String isPresent(String value, String name) {
         String msg = "";
         if (value.isEmpty()) {
+            msg = name + " is required." + lineEnd;
+        }
+        return msg;
+    }
+    
+    public String isDefault(String value, String name) {
+        String msg = "";
+        if (value.equals("Select a Pitcher")) {
             msg = name + " is required." + lineEnd;
         }
         return msg;
