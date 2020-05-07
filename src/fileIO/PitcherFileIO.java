@@ -11,9 +11,12 @@
  * Added code functionality to ImportFile() function
  * Renamed OutputReport() to SummaryReport()
  *
- * Revision: May 6, 2020
+ * Revision: May 6, 2020, Ethan Kohn
  * Made SummaryReport output to a formatted .txt file 
  * Made the formatted .txt empty out after every report print
+ *
+ * Revision: May 7, 2020, Ethan Kohn
+ * Added SummaryReport functionality
 */
 
 package fileIO;
@@ -23,6 +26,8 @@ import java.nio.file.*;
 import players.Pitcher;
 import java.text.NumberFormat;
 import javafx.scene.control.Alert;
+
+import java.util.List;
 
 public class PitcherFileIO {
     
@@ -59,11 +64,63 @@ public class PitcherFileIO {
         }
     }
     
-    public void SummaryReport(){
-        // TODO: function logic
-        // "There should also be a program that will read multiple game 
-        // files and summarize the statistics on each pitcher for a 
-        // specified number of games."
+    public void SummaryReport(String filename, List<Pitcher> pitchers){
+        try {
+            BufferedReader in = new BufferedReader(
+                            new FileReader(filename));
+            try {
+                // Read line of pitcher stats
+                String line = in.readLine();
+                while(line != null) {
+                    // Split line into statistics
+                    String[] stats = line.split("\t");
+                    // Assign those to variables
+                    String playerName = stats[0];
+                    double inningsPitched = Double.parseDouble(stats[1]);
+                    int baseHits = Integer.parseInt(stats[2]);
+                    int runsScored = Integer.parseInt(stats[3]);
+                    int earnedRuns = Integer.parseInt(stats[4]);
+                    int walksAllowed = Integer.parseInt(stats[5]);
+                    int strikeOuts = Integer.parseInt(stats[6]);
+                    int atBats = Integer.parseInt(stats[7]);
+                    int battersFaced = Integer.parseInt(stats[8]);
+                    int numberPitches = Integer.parseInt(stats[9]);
+                    
+                    // Calculate Earned Run Average
+                    double ERA = 9 * earnedRuns / inningsPitched;
+                    
+                    // For every pitcher in the linked list...
+                    for (Pitcher pitcher : pitchers) {
+                        // If the name of the pitcher object equals the
+                        // currently read line in the file...
+                        if (pitcher.getPlayerName().equals(playerName)){
+                            // Add all the read stats to the object
+                            pitcher.addInningsPitched(inningsPitched);
+                            pitcher.addBaseHits(baseHits);
+                            pitcher.addRunsScored(runsScored);
+                            pitcher.addEarnedRuns(earnedRuns);
+                            pitcher.addWalksAllowed(walksAllowed);
+                            pitcher.addStrikeOuts(strikeOuts);
+                            pitcher.addAtBats(atBats);
+                            pitcher.addBattersFaced(battersFaced);
+                            pitcher.addNumberPitches(numberPitches);
+                            pitcher.addERA(ERA);
+                        }  
+                    }
+                    
+                    // Do it again until we're out of pitchers
+                    line = in.readLine();
+                }
+                
+                // Close the file
+                in.close();
+                
+            } catch (IOException e) {
+                System.out.println ("Error:" + e);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error, file not found." + e);
+        }
     }
     
     public void ImportFile(String filename){
