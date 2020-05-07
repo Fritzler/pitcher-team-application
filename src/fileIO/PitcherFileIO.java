@@ -26,7 +26,6 @@ import java.nio.file.*;
 import players.Pitcher;
 import java.text.NumberFormat;
 import javafx.scene.control.Alert;
-
 import java.util.List;
 
 public class PitcherFileIO {
@@ -171,13 +170,6 @@ public class PitcherFileIO {
                     int atBats = Integer.parseInt(stats[7]);
                     int battersFaced = Integer.parseInt(stats[8]);
                     int numberPitches = Integer.parseInt(stats[9]);
-                
-                    // Create a new pitcher object from that object
-                    // NOTE: Not necessary at this point, may be later.
-                    //Pitcher p = new Pitcher(playerName, inningsPitched, baseHits,
-                    //            runsScored, earnedRuns, walksAllowed,
-                    //            strikeOuts, atBats, battersFaced, numberPitches,
-                    //            filename);
                     
                     // Calculate earned run average
                     double ERA = 9 * earnedRuns / inningsPitched;
