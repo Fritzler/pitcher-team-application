@@ -41,10 +41,12 @@ Changes: GUI Remodel; New Information on Pages
 Revision by: Christopher Thurn, 05/06/2020
 Changes: GUI Rework, addition of checkboxes.
         Button Addition.
+
+Revision by: Ethan Kohn, 05/07/2020
+Changes: Pitcher field to combo box, Implementation of cumulative report button
 */
 package gui;
 
-import players.Pitcher;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -70,13 +72,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Separator;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  *
  * @author Christopher
  */
 public class BaseballPitcherGUIFX extends Application {
-    private TextField playerNameField;
+    private ComboBox playerNameCombo;
     private TextField inningsPitchedField;
     private TextField baseHitsField;
     private TextField runsScoredField;
@@ -89,6 +94,11 @@ public class BaseballPitcherGUIFX extends Application {
     
     private ComboBox gameDatesCombo;
     private ComboBox gameDatesReprintCombo;
+    
+    private CheckBox checkbox1;
+    private CheckBox checkbox2;
+    private CheckBox checkbox3;
+    private CheckBox checkbox4;
     
     private Label playerNameLabel;
     private Label inningsPitchedLabel;
@@ -142,8 +152,21 @@ public class BaseballPitcherGUIFX extends Application {
         
         /* Insert Player Information Form - Start */
         grid.add(new Label("Player Name:"), 0, 2);
-        playerNameField = new TextField();
-        grid.add(playerNameField, 1, 2);
+        // Using a combo box for the players to validate input
+        playerNameCombo = new ComboBox();
+        playerNameCombo.getItems().addAll("Select a Pitcher",
+                "TJ Brock", 
+                "Garrett Burhenn", 
+                "Joe Gahm", 
+                "Wyatt Loncar", 
+                "Seth Lonsway",
+                "Mitch Milheim",
+                "Patrick Murphy",
+                "Bayden Root",
+                "Griffan Smith",
+                "Jake Vance");
+        playerNameCombo.getSelectionModel().select(0);
+        grid.add(playerNameCombo, 1, 2);
         playerNameLabel = new Label();
         grid.add(playerNameLabel, 2, 2);
         
@@ -214,8 +237,7 @@ public class BaseballPitcherGUIFX extends Application {
                 "Feb 14, 2020", 
                 "Feb 15, 2020", 
                 "Feb 16, 2020", 
-                "Feb 22, 2020", 
-                "Mar 11, 2020");
+                "Feb 22, 2020");
         gameDatesCombo.getSelectionModel().select(0);
         dateofGameLabel = new Label();
         grid.add(dateofGameLabel, 2, 12);
@@ -245,8 +267,7 @@ public class BaseballPitcherGUIFX extends Application {
                 "Feb 14, 2020", 
                 "Feb 15, 2020", 
                 "Feb 16, 2020", 
-                "Feb 22, 2020", 
-                "Mar 11, 2020");
+                "Feb 22, 2020");
         gameDatesReprintCombo.getSelectionModel().select(0);
         
         //Creates the nice line to look at, breaking up the sections.
@@ -277,20 +298,17 @@ public class BaseballPitcherGUIFX extends Application {
         /* File Name Checkboxes Start */
         grid.add(new Label("Select all files you wish to reprint to get an average of the player stats."), 0, 17, 2, 1);
         
-        CheckBox checkbox1 = new CheckBox("Feb 14, 2020");
+        checkbox1 = new CheckBox("Feb 14, 2020");
         grid.add(checkbox1, 0, 18);
         
-        CheckBox checkbox2 = new CheckBox("Feb 15, 2020");
+        checkbox2 = new CheckBox("Feb 15, 2020");
         grid.add(checkbox2, 1, 18);
         
-        CheckBox checkbox3 = new CheckBox("Feb 16, 2020");
+        checkbox3 = new CheckBox("Feb 16, 2020");
         grid.add(checkbox3, 0, 19);
         
-        CheckBox checkbox4 = new CheckBox("Feb 22, 2020");
+        checkbox4 = new CheckBox("Feb 22, 2020");
         grid.add(checkbox4, 1, 19);
-        
-        CheckBox checkbox5 = new CheckBox("Mar 11, 2020");
-        grid.add(checkbox5, 0, 20);
         
         Button printCumulativeReportButton = new Button("Print Cumulative Report");
         printCumulativeReportButton.setOnAction(event -> printCumulativeReportButtonClicked());
@@ -306,9 +324,11 @@ public class BaseballPitcherGUIFX extends Application {
     
     /* Insert Button Code Start */
     private void insertButtonClicked() {
+        String playerNameValue = String.valueOf(playerNameCombo.getValue());
+        
         //Validates the information presnt in the form to ensure it is proper.
-        Validator v = new Validator();
-        playerNameLabel.setText(v.isPresent(playerNameField.getText(), "Player Name") );        
+        Validator v = new Validator();    
+        playerNameLabel.setText(v.isDefault(playerNameValue, "Player Name") );
         inningsPitchedLabel.setText(v.isDouble(inningsPitchedField.getText(), "Innings Pitched") );        
         baseHitsLabel.setText(v.isInteger(baseHitsField.getText(), "Base Hits") );
         runsScoredLabel.setText(v.isInteger(runsScoredField.getText(), "Runs Scored") );
@@ -319,8 +339,9 @@ public class BaseballPitcherGUIFX extends Application {
         battersFacedLabel.setText(v.isInteger(battersFacedField.getText(), "Batters Faced") );
         numberOfPitchesLable.setText(v.isInteger(numberOfPitchesField.getText(), "Number of Pitches") );
         
+        
         // Only run the following if everything passes validation
-        if (playerNameLabel.getText().isEmpty() && 
+        if (!playerNameValue.equals("Select a Pitcher") && 
             inningsPitchedLabel.getText().isEmpty() && 
             baseHitsLabel.getText().isEmpty() &&
             runsScoredLabel.getText().isEmpty() && 
@@ -347,14 +368,11 @@ public class BaseballPitcherGUIFX extends Application {
                 case "Feb 22, 2020":
                     filename = "02-22-2020.txt";
                     break;
-                case "Mar 11, 2020":
-                    filename = "03-11-2020.txt";
-                    break;
             }
         
             // Convert everything to variables of the proper type
             // This is to make the creation of the pitcher object easier to read
-            String playerName = playerNameField.getText();
+            String playerName = playerNameValue;
             double inningsPitched = Double.parseDouble(inningsPitchedField.getText());
             int baseHits = Integer.parseInt(baseHitsField.getText());
             int runsScored = Integer.parseInt(runsScoredField.getText());
@@ -400,7 +418,7 @@ public class BaseballPitcherGUIFX extends Application {
             
             System.out.println("File Entry Added");
             
-            playerNameField.setText("");
+            playerNameCombo.getSelectionModel().select(0);
             inningsPitchedField.setText("");
             baseHitsField.setText("");
             runsScoredField.setText("");
@@ -430,7 +448,7 @@ public class BaseballPitcherGUIFX extends Application {
     
     /* Reset Form Button Code Start */
     private void resetButtonClicked() {
-        playerNameField.setText("");
+        playerNameCombo.getSelectionModel().select(0);
         inningsPitchedField.setText("");
         baseHitsField.setText("");
         runsScoredField.setText("");
@@ -468,7 +486,89 @@ public class BaseballPitcherGUIFX extends Application {
     /* Print Cumulative Report Button End */
     private void printCumulativeReportButtonClicked()
     {
-        /* Add the code for the Final Project Part Here */
+        // Create a bunch of pitchers to account for everyone on the team
+        Pitcher TJ = new Pitcher("TJ Brock");
+        Pitcher Garrett = new Pitcher("Garrett Burhenn");
+        Pitcher Joe = new Pitcher("Joe Gahm");
+        Pitcher Wyatt = new Pitcher("Wyatt Loncar");
+        Pitcher Seth = new Pitcher("Seth Lonsway");
+        Pitcher Mitch = new Pitcher("Mitch Milheim");
+        Pitcher Patrick = new Pitcher("Patrick Murphy");
+        Pitcher Bayden = new Pitcher("Bayden Root");
+        Pitcher Griffan = new Pitcher("Griffan Smith");
+        Pitcher Jake = new Pitcher("Jake Vance");
+        
+        // Create a collection of these objects using LinkedList
+        List<Pitcher> pitchers = new LinkedList<>();
+        pitchers.add(TJ);
+        pitchers.add(Garrett);
+        pitchers.add(Joe);
+        pitchers.add(Wyatt);
+        pitchers.add(Seth);
+        pitchers.add(Mitch);
+        pitchers.add(Patrick);
+        pitchers.add(Bayden);
+        pitchers.add(Griffan);
+        pitchers.add(Jake);
+        
+        // initiralize a filename variable
+        String filename;
+        // create a counter for the number of games we're summarizing
+        int numOfGames = 0;
+        
+        if (checkbox1.isSelected()){
+            // set the filename
+            filename = "02-14-2020.txt";
+            // add to counter
+            numOfGames++;
+            // call the summary report function using the filename and list
+            io.SummaryReport(filename, pitchers);
+        }
+        
+        if (checkbox2.isSelected()){
+            filename = "02-15-2020.txt";
+            numOfGames++;
+            // call the summary report function using the filename and list
+            io.SummaryReport(filename, pitchers);
+        }
+        
+        if (checkbox3.isSelected()){
+            filename = "02-16-2020.txt";
+            numOfGames++;
+            // call the summary report function using the filename and list
+            io.SummaryReport(filename, pitchers);
+        }
+        
+        if (checkbox4.isSelected()){
+            filename = "02-22-2020.txt";
+            numOfGames++;
+            // call the summary report function using the filename and list
+            io.SummaryReport(filename, pitchers);
+        }
+        
+        System.out.println("\nNumber of games summarized:" + numOfGames);
+        System.out.println();
+        
+        for (Pitcher pitcher : pitchers){
+            System.out.println("Player: " + pitcher.getPlayerName());
+            if (pitcher.getInningsPitched() == 0.0) {
+                System.out.println("Did not participate in selected games.");
+                System.out.println();
+            } else {
+                System.out.println("Innings Pitched: " + pitcher.getInningsPitched()
+                + " | Base Hits: " + pitcher.getBaseHits()
+                + " | Runs Scored: " + pitcher.getRunsScored()
+                + " | Earned Runs: " + pitcher.getEarnedRuns()
+                + " | Walks Allowed: " + pitcher.getWalksAllowed()
+                + " | Strike Outs: " + pitcher.getStrikeOuts()
+                + " | At Bats: " + pitcher.getAtBats()
+                + " | Batters Faced: " + pitcher.getBattersFaced()
+                + " | Number of Pitches: " + pitcher.getNumberPitches()
+                + " | ERA: " + pitcher.getERA());
+                System.out.println();
+            }
+        }
+        
     }
     /* Print Cumulative Report Button End */
     
@@ -490,9 +590,6 @@ public class BaseballPitcherGUIFX extends Application {
                     break;
                 case "Feb 22, 2020":
                     filename = "02-22-2020.txt";
-                    break;
-                case "Mar 11, 2020":
-                    filename = "03-11-2020.txt";
                     break;
             }
 
@@ -569,16 +666,6 @@ public class BaseballPitcherGUIFX extends Application {
         
         try {
             String fileString = "02-22-2020.txt";
-            Path filePath = Paths.get(fileString);
-            if (Files.notExists(filePath)) {
-                Files.createFile(filePath);
-            }
-        } catch (IOException e) {
-            System.out.println("Error on creating writeable file: " + e);
-        }
-        
-        try {
-            String fileString = "03-11-2020.txt";
             Path filePath = Paths.get(fileString);
             if (Files.notExists(filePath)) {
                 Files.createFile(filePath);
