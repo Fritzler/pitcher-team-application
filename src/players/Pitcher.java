@@ -8,7 +8,6 @@ package players;
  * Changelog:
  * Revision: April 25, 2020
  * Fixed Data Type of inningsPitched
-
  * Revision: May 7, 2020
  * Added new constructor, "add" functions for game summaries, ERA tracking
 */
@@ -60,10 +59,7 @@ public class Pitcher {
         this.ERA = 0;
     }
     
-
     // Everything below here is mutators and accessors (get and set)
-    
-    
     // Player Name
     public String getPlayerName() {
         return playerName;
@@ -206,6 +202,5 @@ public class Pitcher {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-    
+    }   
 }
